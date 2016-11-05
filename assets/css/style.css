@@ -1,0 +1,36 @@
+body {
+    background-color: #000000;
+}
+
+.container {
+    background-color: #fff;
+    margin: 0 auto;
+    min-height: 800px;
+    max-width: 960px;
+}
+
+#topicsForm {
+    float: right;
+    padding: 5px;
+}
+
+#gallery {
+    margin: 0 auto;
+    clear: both;
+    border: 1px solid #000;
+    min-height: 400px;
+    height: auto;
+    min-width: 400px;
+    text-align: center;
+}
+
+#gallery div {
+    display: inline-block;
+    padding: 5px;
+}
+
+#gallery img {
+    clear: both;
+    max-width: 200px;
+    height: auto;
+}
