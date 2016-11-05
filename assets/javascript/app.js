@@ -1,14 +1,15 @@
-//public apikey "dc6zaTOxFJmzC”
 var $gallery = $('#gallery');
 var $data;
 var stillImages = [];
 var activeImages = [];
 var topics = ["BMW M5", "La Ferrari", "Pagani Zonda", "Bugatti Veryon"];
+//query for AJAX call
 var MyQuery = {url: "",method: "GET"};
 
 function getUrl(topic) {
+    //public apikey "dc6zaTOxFJmzC”
     let apiKey = 'dc6zaTOxFJmzC';
-    let limit = 10;
+    let limit = 10; //sets limit of images returned
     return `http://api.giphy.com/v1/gifs/search?q=${topic}&limit=${limit}&api_key=${apiKey}`;
 }
 
@@ -26,14 +27,29 @@ function setTopicBtns() {
     }
 }
 
+function searchTopic() {
+    $('.topicBtn').on('click', function(){
+        //gets text from topic buttons to be passed to query
+        let currentBtn = "#"+ $(this).attr('id');
+        let keyWord = $(currentBtn).val();
+        
+        //change spaces to '+' for api queries
+        keyWord = keyWord.replace(" ","+");
+        
+        //inserts topic into query string to be searched
+        MyQuery.url = getUrl(keyWord);
+        getData(MyQuery);
+    });
+}
+
 function showGifs(response) {
     $gallery.empty();
     
     //loop through data to display all images from Query
     for (let i = 0; i < response.data.length; i++) {
         
-        let stillUrl = response.data[i].images.fixed_width_still.url;
         let activeUrl = response.data[i].images.fixed_width.url;
+        let stillUrl = response.data[i].images.fixed_width_still.url;
         let img = $(`<img class="gifImage" src="${stillUrl}">`);
         
         //save urls for switching animated and still images
@@ -56,10 +72,8 @@ function showGifs(response) {
 }
 
 function animateGifs(response){
-    //$data = response;
  $('.gifImage').on('click', function() {
     let currentGif = $(this).attr('id');
-
     //find matching data to current image id
     for (let i = 0; i < $data.data.length; i++) {
         if ($data.data[i].slug == currentGif) {
@@ -77,29 +91,29 @@ function animateGifs(response){
  });
 }
 
-function searchTopic() {
-    $('.topicBtn').on('click', function(){
-        //gets text from topic buttons to be passed to query
-        let currentBtn = "#"+ $(this).attr('id');
-        let keyWord = $(currentBtn).val();
-        
-        //change spaces to '+' for api queries
-        keyWord = keyWord.replace(" ","+");
-        
-        //inserts topic into query string to be searched
-        MyQuery.url = getUrl(keyWord);
-        getData(MyQuery);
-    });
-}
-
 function getData(query){
     $.ajax(MyQuery).done(function(data){
         $data = data;
-        searchTopic();
         showGifs($data);
         animateGifs($data);
     });
 }
+
+//add new topic to top of page
+$('#addBtn').on('click', function() {
+    let input = $('#topicInput').val();
+    console.log(input);
+    //checks if topic already exists
+    if (topics.indexOf(input) == -1) {
+        topics.push(input);
+    } else {
+        console.log("already a topic");
+    }
+    
+    setTopicBtns();
+    searchTopic();
+    return false;
+});
 
 $(document).ready(function(){
     setTopicBtns();
