@@ -2,7 +2,7 @@ var $gallery = $('#gallery');
 var $data;
 var stillImages = [];
 var activeImages = [];
-var topics = ["BMW M5", "La Ferrari", "Pagani Zonda", "Bugatti Veryon"];
+var topics = ["BMW M5", "Enzo Ferrari", "Pagani Zonda", "Bugatti Veryon", "Toyota Supra", "Nissan Skyline GTR", "Mazda RX-7"];
 //query for AJAX call
 var MyQuery = {url: "",method: "GET"};
 
@@ -48,8 +48,8 @@ function showGifs(response) {
     //loop through data to display all images from Query
     for (let i = 0; i < response.data.length; i++) {
         
-        let activeUrl = response.data[i].images.fixed_width.url;
-        let stillUrl = response.data[i].images.fixed_width_still.url;
+        let activeUrl = response.data[i].images.fixed_height.url;
+        let stillUrl = response.data[i].images.fixed_height_still.url;
         let img = $(`<img class="gifImage" src="${stillUrl}">`);
         
         //save urls for switching animated and still images
