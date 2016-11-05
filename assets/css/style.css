@@ -9,6 +9,11 @@ body {
     max-width: 960px;
 }
 
+#topics button{
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
 #topicsForm {
     float: right;
     padding: 5px;
@@ -33,4 +38,9 @@ body {
     clear: both;
     max-width: 200px;
     height: auto;
+}
+
+footer {
+    padding: 5px;
+    text-align: center;
 }

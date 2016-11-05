@@ -19,7 +19,7 @@ function setTopicBtns() {
     
     for (let i = 0; i < topics.length; i++) {
         let btn = $('<button>');
-        btn.addClass('topicBtn btn btn-success');
+        btn.addClass('topicBtn btn');
         btn.attr('id', 'topic-' + i);
         btn.attr('value', topics[i]);
         btn.text(topics[i]);
