@@ -10,7 +10,7 @@ function getUrl(topic) {
     //public apikey "dc6zaTOxFJmzC”
     let apiKey = 'dc6zaTOxFJmzC';
     let limit = 10; //sets limit of images returned
-    return `http://api.giphy.com/v1/gifs/search?q=${topic}&limit=${limit}&api_key=${apiKey}`;
+    return `https://api.giphy.com/v1/gifs/search?q=${topic}&limit=${limit}&api_key=${apiKey}`;
 }
 
 function setTopicBtns() {
