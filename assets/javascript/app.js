@@ -80,11 +80,11 @@ function animateGifs(){
             //animate if its a still image
             if ($('#'+ currentGif).attr('value') == 'still') {
                 $('#'+ currentGif).attr('src', activeImages[i]);
-                $('#'+ currentGif).attr('value', "active");
+                $('#'+ currentGif).attr('value', 'active');
             } else {
                 //turn back to still image if active
                 $('#'+ currentGif).attr('src', stillImages[i]);
-                $('#'+ currentGif).attr('value', "still");
+                $('#'+ currentGif).attr('value', 'still');
             }
         }
     }
@@ -92,7 +92,7 @@ function animateGifs(){
 }
 
 function getData(query){
-    $.ajax(MyQuery).done(function(data){
+    $.ajax(query).done(function(data){
         $data = data.data;
         showGifs($data);
         animateGifs();
