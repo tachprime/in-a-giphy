@@ -46,10 +46,10 @@ function showGifs(response) {
     $gallery.empty();
     
     //loop through data to display all images from Query
-    for (let i = 0; i < response.data.length; i++) {
+    for (let i = 0; i < response.length; i++) {
         
-        let activeUrl = response.data[i].images.fixed_height.url;
-        let stillUrl = response.data[i].images.fixed_height_still.url;
+        let activeUrl = response[i].images.fixed_height.url;
+        let stillUrl = response[i].images.fixed_height_still.url;
         let img = $(`<img class="gifImage" src="${stillUrl}">`);
         
         //save urls for switching animated and still images
@@ -59,11 +59,11 @@ function showGifs(response) {
         //append divs and images to #gallery div with attributes
         //for future reference
         let imgDiv = $('<div>');
-        let rating = $(`<p>Rating: ${response.data[i].rating}</p>`);
+        let rating = $(`<p>Rating: ${response[i].rating}</p>`);
         imgDiv.addClass('gifDiv');
         //use slug instead of id to get the unique id+Query
         //string together
-        img.attr('id', response.data[i].slug);
+        img.attr('id', response[i].slug);
         img.attr('value', 'still');
         $gallery.append(imgDiv);
         $(imgDiv).append(rating);
@@ -71,12 +71,12 @@ function showGifs(response) {
     }
 }
 
-function animateGifs(response){
+function animateGifs(){
  $('.gifImage').on('click', function() {
     let currentGif = $(this).attr('id');
     //find matching data to current image id
-    for (let i = 0; i < $data.data.length; i++) {
-        if ($data.data[i].slug == currentGif) {
+    for (let i = 0; i < $data.length; i++) {
+        if ($data[i].slug == currentGif) {
             //animate if its a still image
             if ($('#'+ currentGif).attr('value') == 'still') {
                 $('#'+ currentGif).attr('src', activeImages[i]);
@@ -93,21 +93,21 @@ function animateGifs(response){
 
 function getData(query){
     $.ajax(MyQuery).done(function(data){
-        $data = data;
+        $data = data.data;
         showGifs($data);
-        animateGifs($data);
+        animateGifs();
     });
 }
 
 //add new topic to top of page
 $('#addBtn').on('click', function() {
-    let input = $('#topicInput').val();
+    let input = $('#topicInput').val().trim();
     console.log(input);
     //checks if topic already exists
     if (topics.indexOf(input) == -1) {
         topics.push(input);
     } else {
-        console.log("already a topic");
+        alert("already a topic");
     }
     
     setTopicBtns();
