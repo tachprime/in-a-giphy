@@ -1,7 +1,7 @@
-//var stillImages = [];
-//var activeImages = [];
 var $gallery = $('#gallery');
 var $data;
+var play;
+var stop = 'assets/images/ajax-loader.gif';
 var topics = ["BMW M5", "Enzo Ferrari", "Pagani Zonda", "Bugatti Veryon", "Toyota Supra", "Nissan Skyline GTR", "Mazda RX-7"];
 //query for AJAX call
 var MyQuery = {url: "",method: "GET"};
@@ -33,9 +33,6 @@ function searchTopic() {
         let currentBtn = "#"+ $(this).attr('id');
         let keyWord = $(currentBtn).val();
         
-        //change spaces to '+' for api queries
-        keyWord = keyWord.replace(" ","+");
-        
         //inserts topic into query string to be searched
         MyQuery.url = getUrl(keyWord);
         getData(MyQuery);
@@ -51,12 +48,6 @@ function showGifs(response) {
         let activeUrl = response[i].images.fixed_height.url;
         let stillUrl = response[i].images.fixed_height_still.url;
         let img = $(`<img class="gifImage" src="${stillUrl}">`);
-    
-        //old way of storing my still and active Gifs
-        //-------------------------------------------------------
-        //save urls for switching animated and still images
-        //activeImages[i] = activeUrl;
-        //stillImages[i] = stillUrl;
         
         //append divs and images to #gallery div with attributes
         //for future reference
@@ -75,39 +66,27 @@ function showGifs(response) {
     }
 }
 
-function animateGifs(){
- $('.gifImage').on('click', function() {
-    let currentGif = '#' + $(this).attr('id');
-    let play = $(currentGif).data('play');
-    let stop = $(currentGif).data('stop');
-     
-     if (stop == $('#bigGif').attr('src')) {
-         $('#bigGif').attr('src', play);
-     } else {
-         $('#bigGif').attr('src', stop);
-     }
-     
-//old solution for gif switching
-//---------------------------------------------------------------     
-    //find matching data to current image id
-//    for (let i = 0; i < $data.length; i++) {
-//        if (response[i].slug == currentGif) {
-//            //animate if its a still image
-//            if ($('#'+ currentGif).attr('value') == 'still') {
-//                $('#'+ currentGif).attr('src', activeImages[i]);
-//                $('#'+ currentGif).attr('value', 'active');
-//                $('#bigGif').attr('src', activeImages[i]);
-//                break;
-//            } else {
-//                //turn back to still image if active
-//                $('#'+ currentGif).attr('src', stillImages[i]);
-//                $('#'+ currentGif).attr('value', 'still');
-//                $('#bigGif').attr('src', stillImages[i]);
-//                break;
-//            }
-//        }
-//    }
- });
+function animateGifs() {
+     $('.gifImage').on('click', function() {
+        let currentGif = '#' + $(this).attr('id');
+        play = $(currentGif).data('play');
+        stop = $(currentGif).data('stop');
+        $('#bigGif').data('play', play);
+        $('#bigGif').data('stop', stop);
+        $('#bigGif').attr('src', stop);
+    });  
+}
+
+function clickBigGif() {
+    $('#bigGif').on('click', function(e) {
+        e.stopImmediatePropagation();
+        
+        if (stop == $('#bigGif').attr('src')) {
+             $('#bigGif').attr('src', play);
+        } else {
+             $('#bigGif').attr('src', stop);
+        }
+    });
 }
 
 function getData(query){
@@ -115,6 +94,7 @@ function getData(query){
         $data = data.data;
         showGifs($data);
         animateGifs();
+        clickBigGif();
     });
 }
 
@@ -122,11 +102,12 @@ function getData(query){
 $('#addBtn').on('click', function() {
     let input = $('#topicInput').val().trim();
     console.log(input);
+    
     //checks if topic already exists
     if (topics.indexOf(input) == -1 && input !== "" && input !== " ") {
         topics.push(input);
     } else {
-        alert("already a topic");
+        alert("already a topic or \ninvalid topic");
     }
     
     setTopicBtns();
@@ -136,5 +117,5 @@ $('#addBtn').on('click', function() {
 
 $(document).ready(function(){
     setTopicBtns();
-    searchTopic();
+    searchTopic();    
 });

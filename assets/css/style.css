@@ -2,12 +2,16 @@ body {
     background-color: #000000;
     background-image: url(../images/moulin.png);
     background-attachment: fixed;
+    height: 100%;
 }
 
 .container {
     margin: 0 auto;
     min-height: 600px;
     max-width: 960px;
+    height: 100%;
+    position: relative;
+    margin-bottom: 60px;
 }
 
 #topics button{
@@ -90,11 +94,12 @@ body {
 }
 
 footer {
+    clear: both;
     padding: 5px;
     text-align: center;
     border-top: 4px solid #ffffff;
     background-color: #000000;
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
 }
